@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calder Tech | Soluções Industriais</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --black: #050810;
+      --dark: #0b0f1a;
+      --card-bg: #0f1421;
+      --border: rgba(255,255,255,0.07);
+      --accent: #f59e0b;
+      --accent-dim: rgba(245,158,11,0.12);
+      --text: #d1d5db;
+      --muted: #6b7280;
+      --white: #f9fafb;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--black);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 900;
+      padding: 0 48px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+
+    header.scrolled {
+      background: rgba(5,8,16,0.92);
+      backdrop-filter: blur(16px);
+      border-color: var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .logo-text strong {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .logo-text span {
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+
+    nav a:hover { color: var(--white); }
+    nav a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #0a0a0a !important;
+      padding: 9px 20px;
+      border-radius: 6px;
+      font-weight: 600 !important;
+      letter-spacing: 0.5px !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: #fbbf24 !important; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 40px 80px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(5,8,16,0.3) 0%, rgba(5,8,16,0.7) 60%, var(--black) 100%),
+        url("fotos calder/p18.jpeg") center/cover no-repeat;
+    }
+
+    .hero-noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+
+    .hero-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(245,158,11,0.4);
+      background: rgba(245,158,11,0.08);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      border-radius: 40px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      position: relative;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(52px, 9vw, 110px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 0.92;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      position: relative;
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-sub span {
+      margin: 0 10px;
+      color: var(--accent);
+      opacity: 0.5;
+    }
+
+    .hero-actions {
+      position: relative;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #0a0a0a;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover { background: #fbbf24; transform: translateY(-2px); }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--white);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 13px 28px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: fadeIn 1s 1s ease both;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollDown 1.9s ease infinite;
+    }
+
+    @keyframes scrollDown {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--card-bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 48px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 0 24px;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* ── SECTION COMMONS ── */
+    .section {
+      padding: 100px 48px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 800;
+      color: var(--white);
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.75;
+    }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── SOBRE ── */
+    #sobre {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .sobre-visual {
+      position: relative;
+    }
+
+    .sobre-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .sobre-badge-float {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      background: var(--accent);
+      color: #0a0a0a;
+      padding: 20px 24px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .sobre-badge-float strong {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .sobre-badge-float span {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .sobre-content .section-desc { max-width: 100%; margin-bottom: 32px; }
+
+    .sobre-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sobre-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .sobre-list li::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── SERVIÇOS ── */
+    #servicos { background: var(--dark); }
+
+    .servicos-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      padding: 40px 36px;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-card:hover { background: #131929; }
+
+    .service-icon {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(245,158,11,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 24px;
+    }
+
+    .service-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .service-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── PROJETOS ── */
+    .projetos-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .projetos-header .section-desc {
+      margin: 0 auto;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(5,8,16,0.8) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
+    }
+
+    .gallery-overlay span {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.95);
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 8px;
+      object-fit: contain;
+      transition: opacity 0.2s;
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 24px; right: 28px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+
+    .lightbox-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .lightbox-btn:hover { background: rgba(255,255,255,0.16); }
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+
+    .lightbox-counter {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    /* ── CONTATO ── */
+    #contato {
+      background: var(--dark);
+    }
+
+    .contato-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contato-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 48px;
+    }
+
+    .contato-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 20px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .contato-card:hover {
+      border-color: rgba(245,158,11,0.3);
+      transform: translateY(-4px);
+    }
+
+    .contato-card .icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .contato-card h4 {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .contato-card p {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .contato-cta {
+      margin-top: 48px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #25D366;
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 16px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .contato-cta:hover { background: #22c55e; transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p { font-size: 13px; color: var(--muted); }
+
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── WHATSAPP FLOAT ── */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 800;
+      background: #25D366;
+      color: #fff;
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 26px;
+      box-shadow: 0 4px 24px rgba(37,211,102,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 30px rgba(37,211,102,0.55);
+    }
+
+    .whatsapp-pulse {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid rgba(37,211,102,0.5);
+      animation: waPulse 2s infinite;
+    }
+
+    @keyframes waPulse {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      header { padding: 0 24px; }
+      nav a:not(.nav-cta) { display: none; }
+      .section { padding: 72px 24px; }
+      #sobre { grid-template-columns: 1fr; gap: 48px; }
+      .sobre-badge-float { right: 0; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 24px; }
+      .stat-item { border: none; padding: 16px 0; }
+      .servicos-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 52px; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+      .gallery-item img { height: 160px; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <a href="#" class="logo">
+    <img src="fotos calder/p1.jpeg" class="logo-img" alt="Calder Tech">
+    <div class="logo-text">
+      <strong>Calder Tech</strong>
+      <span>Soluções Industriais</span>
+    </div>
+  </a>
+
+  <nav>
+    <a href="#sobre">Sobre</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#projetos">Projetos</a>
+    <a href="#contato">Contato</a>
+    <a href="https://wa.me/5531996189316?text=Olá,%20quero%20um%20orçamento" class="nav-cta" target="_blank">Orçamento</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+
+  <div class="hero-badge">Excelência Industrial</div>
+
+  <h1>Soluções de<br><em>Alto Padrão</em></h1>
+
+  <p class="hero-sub">
+    Caldeiraria <span>•</span> Fabricação <span>•</span> Montagem <span>•</span> Manutenção
+  </p>
+
+  <div class="hero-actions">
+    <a href="https://wa.me/5531996189316?text=Olá,%20quero%20um%20orçamento" class="btn-primary" target="_blank">
+      💬 Solicitar Orçamento
+    </a>
+    <a href="#projetos" class="btn-outline">
+      Ver Projetos →
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Rolar</span>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item reveal">
+    <div class="stat-num">20+</div>
+    <div class="stat-label">Anos de Experiência</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">100+</div>
+    <div class="stat-label">Projetos Entregues</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">100%</div>
+    <div class="stat-label">Conformidade Técnica</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">24h</div>
+    <div class="stat-label">Suporte Disponível</div>
+  </div>
+</div>
+
+<!-- SOBRE -->
+<section class="section" id="sobre">
+  <div class="sobre-visual reveal">
+    <img src="fotos calder/p2.jpeg" class="sobre-img" alt="Trabalho Calder Tech">
+    <div class="sobre-badge-float">
+      <strong>20+</strong>
+      <span>Anos no Mercado</span>
+    </div>
+  </div>
+
+  <div class="sobre-content reveal">
+    <span class="section-tag">Quem Somos</span>
+    <h2 class="section-title">Excelência em Cada Solda</h2>
+    <p class="section-desc">
+      A Calder Tech é especializada em soluções industriais completas, atuando com excelência em caldeiraria leve e pesada, fabricação sob medida, montagem e manutenção de estruturas metálicas.
+      <br><br>
+      Nossa equipe é formada por profissionais altamente qualificados, com equipamentos modernos e rigoroso cumprimento das normas de segurança vigentes.
+    </p>
+
+    <ul class="sobre-list">
+      <li>Equipe técnica certificada e experiente</li>
+      <li>Equipamentos de última geração</li>
+      <li>Normas de segurança rigorosamente seguidas</li>
+      <li>Atendimento personalizado para cada projeto</li>
+      <li>Prazos e qualidade garantidos</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section class="section" id="servicos">
+  <div class="servicos-header">
+    <div class="reveal">
+      <span class="section-tag">O Que Fazemos</span>
+      <h2 class="section-title">Nossos Serviços</h2>
+    </div>
+    <p class="section-desc reveal" style="max-width:360px; text-align:right;">
+      Soluções completas do projeto à entrega, com qualidade industrial certificada.
+    </p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">⚙️</div>
+      <h3>Caldeiraria</h3>
+      <p>Fabricação e manutenção de vasos de pressão, tanques, silos e estruturas de aço com alto rigor técnico e normas ASME/NR-13.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🔩</div>
+      <h3>Fabricação</h3>
+      <p>Peças e conjuntos metálicos sob medida conforme especificações do cliente, com precisão dimensional e acabamento superior.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🏗️</div>
+      <h3>Montagem</h3>
+      <p>Montagem de estruturas metálicas, plataformas, escadas e passarelas industriais com segurança e eficiência em campo.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🛠️</div>
+      <h3>Manutenção</h3>
+      <p>Manutenção preventiva e corretiva de equipamentos e estruturas industriais, minimizando paradas e maximizando a vida útil.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETOS -->
+<section class="section" id="projetos">
+  <div class="projetos-header reveal">
+    <span class="section-tag">Portfólio</span>
+    <h2 class="section-title">Projetos Realizados</h2>
+    <p class="section-desc">Conheça alguns dos trabalhos que entregamos com excelência para nossos clientes.</p>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <div class="gallery-item reveal" data-index="0">
+      <img src="fotos calder/p2.jpeg" alt="Projeto 1" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="1">
+      <img src="fotos calder/p3.jpeg" alt="Projeto 2" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="2">
+      <img src="fotos calder/p4.jpeg" alt="Projeto 3" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="3">
+      <img src="fotos calder/p5.jpeg" alt="Projeto 4" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="4">
+      <img src="fotos calder/p6.jpeg" alt="Projeto 5" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="5">
+      <img src="fotos calder/p7.jpeg" alt="Projeto 6" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="6">
+      <img src="fotos calder/p8.jpeg" alt="Projeto 7" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="7">
+      <img src="fotos calder/p9.jpeg" alt="Projeto 8" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="8">
+      <img src="fotos calder/p10.jpeg" alt="Projeto 9" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="9">
+      <img src="fotos calder/p11.jpeg" alt="Projeto 10" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="10">
+      <img src="fotos calder/p12.jpeg" alt="Projeto 11" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="11">
+      <img src="fotos calder/p13.jpeg" alt="Projeto 12" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="12">
+      <img src="fotos calder/p14.jpeg" alt="Projeto 13" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="13">
+      <img src="fotos calder/p15.jpeg" alt="Projeto 14" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="14">
+      <img src="fotos calder/p16.jpeg" alt="Projeto 15" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="15">
+      <img src="fotos calder/p17.jpeg" alt="Projeto 16" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="16">
+      <img src="fotos calder/p18.jpeg" alt="Projeto 17" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="17">
+      <img src="fotos/p19.jpeg" alt="Projeto 18" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="18">
+      <img src="fotos/p20.jpeg" alt="Projeto 19" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="19">
+      <img src="fotos/p21.jpeg" alt="Projeto 20" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="20">
+      <img src="fotos/p22.jpeg" alt="Projeto 21" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="21">
+      <img src="fotos/p23.jpeg" alt="Projeto 22" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="22">
+      <img src="fotos/p24.jpeg" alt="Projeto 23" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="23">
+      <img src="fotos/p25.jpeg" alt="Projeto 24" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="24">
+      <img src="fotos/p26.jpeg" alt="Projeto 25" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="25">
+      <img src="fotos/p27.jpeg" alt="Projeto 26" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="26">
+      <img src="fotos/p28.jpeg" alt="Projeto 27" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="27">
+      <img src="fotos/p29.jpeg" alt="Projeto 28" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="28">
+      <img src="fotos/p30.jpeg" alt="Projeto 29" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="29">
+      <img src="fotos/p31.jpeg" alt="Projeto 30" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="30">
+      <img src="fotos/p32.jpeg" alt="Projeto 31" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="31">
+      <img src="fotos/p33.jpeg" alt="Projeto 32" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="32">
+      <img src="fotos/p34.jpeg" alt="Projeto 33" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="33">
+      <img src="fotos/p35.jpeg" alt="Projeto 34" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="34">
+      <img src="fotos/p36.jpeg" alt="Projeto 35" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="35">
+      <img src="fotos/p37.jpeg" alt="Projeto 36" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="36">
+      <img src="fotos/p38.jpeg" alt="Projeto 37" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="37">
+      <img src="fotos/p39.jpeg" alt="Projeto 38" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="38">
+      <img src="fotos/p40.jpeg" alt="Projeto 39" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+    <div class="gallery-item reveal" data-index="39">
+      <img src="fotos/p41.jpeg" alt="Projeto 40" loading="lazy">
+      <div class="gallery-overlay"><span>Ver foto</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="section" id="contato">
+  <div class="contato-inner">
+    <div class="reveal">
+      <span class="section-tag">Entre em Contato</span>
+      <h2 class="section-title">Vamos Trabalhar Juntos</h2>
+      <p class="section-desc" style="margin: 0 auto;">
+        Entre em contato e solicite seu orçamento sem compromisso. Nossa equipe responde rapidamente.
+      </p>
+    </div>
+
+    <div class="contato-cards">
+      <div class="contato-card reveal">
+        <div class="icon">📞</div>
+        <h4>Telefone / WhatsApp</h4>
+        <p>(31) 99618-9316</p>
+      </div>
+      <div class="contato-card reveal">
+        <div class="icon">📍</div>
+        <h4>Região de Atendimento</h4>
+        <p>Minas Gerais e Região</p>
+      </div>
+      <div class="contato-card reveal">
+        <div class="icon">🕐</div>
+        <h4>Horário</h4>
+        <p>Seg–Sex · 07h–18h</p>
+      </div>
+    </div>
+
+    <a href="https://wa.me/5531996189316?text=Olá,%20quero%20um%20orçamento" class="contato-cta reveal" target="_blank">
+      💬 Falar no WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Calder Tech · Soluções Industriais</p>
+  <div class="footer-links">
+    <a href="#sobre">Sobre</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#projetos">Projetos</a>
+    <a href="#contato">Contato</a>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/5531996189316?text=Olá,%20quero%20um%20orçamento" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+  <div class="whatsapp-pulse"></div>
+  💬
+</a>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lightbox-close" id="lb-close" aria-label="Fechar">✕</button>
+  <button class="lightbox-btn lightbox-prev" id="lb-prev" aria-label="Anterior">‹</button>
+  <img class="lightbox-img" id="lb-img" alt="">
+  <button class="lightbox-btn lightbox-next" id="lb-next" aria-label="Próximo">›</button>
+  <div class="lightbox-counter" id="lb-counter"></div>
+</div>
+
+<script>
+  // ── HEADER SCROLL ──
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ── REVEAL ON SCROLL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // ── LIGHTBOX ──
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbCounter = document.getElementById('lb-counter');
+  const images = Array.from(galleryItems).map(el => el.querySelector('img').src);
+  let current = 0;
+
+  function openLightbox(index) {
+    current = index;
+    lbImg.src = images[current];
+    lbCounter.textContent = `${current + 1} / ${images.length}`;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function navigate(dir) {
+    current = (current + dir + images.length) % images.length;
+    lbImg.style.opacity = '0';
+    setTimeout(() => {
+      lbImg.src = images[current];
+      lbCounter.textContent = `${current + 1} / ${images.length}`;
+      lbImg.style.opacity = '1';
+    }, 150);
+  }
+
+  galleryItems.forEach((item, i) => item.addEventListener('click', () => openLightbox(i)));
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', () => navigate(-1));
+  document.getElementById('lb-next').addEventListener('click', () => navigate(1));
+
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+  });
+
+  // ── SMOOTH ANCHOR NAV ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+
+      // Evita erro quando o link for apenas "#".
+      if (!href || href === '#') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        const offset = target.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
